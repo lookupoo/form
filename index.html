@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>فرم ثبت شکایت برای رهبر جامعه</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .form-container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 300px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 6px;
+      margin-top: 4px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    .fingerprint {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+    .fingerprint img {
+      width: 64px;
+      height: 64px;
+    }
+    .submitted-message {
+      text-align: center;
+      color: green;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h3 style="text-align:center">فرم شکایت ساده</h3>
+    <form id="complaintForm">
+      <label>نام شاکی</label>
+      <input type="text" name="plaintiff" required>
+
+      <label>نام متهم</label>
+      <input type="text" name="defendant" required>
+
+      <label>موضوع شکایت</label>
+      <select name="category">
+        <option value="مالی">مالی</option>
+        <option value="رفتاری">رفتاری</option>
+        <option value="بی‌عدالتی">بی‌عدالتی</option>
+        <option value="سایر">سایر</option>
+      </select>
+
+      <label>شرح شکایت</label>
+      <textarea name="description" rows="3" required></textarea>
+
+      <div class="fingerprint" id="submitFingerprint">
+        <img id="fingerImg" src="https://cdn.imgurl.ir/uploads/o484102_RED.png" alt="اثر انگشت">
+      </div>
+    </form>
+    <div class="submitted-message" id="message"></div>
+  </div>
+
+  <audio id="pingSound" src="https://cdn.imgurl.ir/uploads/u12651_ping-82822.mp3"></audio>
+
+  <script>
+    const fingerprint = document.getElementById('submitFingerprint');
+    const fingerImg = document.getElementById('fingerImg');
+    const form = document.getElementById('complaintForm');
+    const message = document.getElementById('message');
+    const pingSound = document.getElementById('pingSound');
+
+    let submitted = false;
+
+    fingerprint.addEventListener('click', () => {
+      if (submitted) return;
+
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      // ذخیره موقت داده‌ها در حافظه محلی
+      localStorage.setItem('complaintSubmission', JSON.stringify(data));
+
+      fingerImg.src = 'https://cdn.imgurl.ir/uploads/b54078_GREEN.png';
+      pingSound.play();
+      submitted = true;
+      message.textContent = 'شکایت ثبت شد و به رهبر ارسال گردید.';
+    });
+  </script>
+</body>
+</html>
